@@ -1,22 +1,26 @@
 ion-col {
-  height: 180px;
-  background-color: #135d54;
+  height: 165px;
+  background-color: #78c0a8;
   border: solid 1px #fff;
   color: #fff;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-ion-header{
-  margin-top: 50px;
-}
-
-[data-type='micro'] {
-  background: url('https://www.we-heart.com/upload-images/thehorseshoelondon1753@2x.jpg');
-  background-size: contain;
+  border-radius: 15px;
   font-weight: bold;
+}
+
+ion-content {
+  overflow: hidden;
+  overflow-y: none;
+  --offset-bottom: 0px !important;
+  --overflow: hidden;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 [data-type='closed'] {
@@ -32,4 +36,15 @@ ion-header{
   align-items: center;
   justify-content: center;
   margin-bottom: 30px;
+  background: #f0a830
+}
+
+ion-tab-bar {
+  --background: transparent;
+  --border: none;
+  margin-bottom: 10px;
+}
+
+ion-toolbar {
+  --background: white;
 }

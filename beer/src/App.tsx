@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import 'leaflet/dist/leaflet.css';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -11,7 +12,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { beerOutline, ellipse, searchCircleOutline, searchOutline, square, starOutline, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -41,39 +42,39 @@ setupIonicReact();
 export const AppContext = createContext<any>(undefined);
 
 const App: React.FC = () => {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(false);
 
   return (
-    <AppContext.Provider value={{ selected, setSelected }}>
+    <AppContext.Provider value={{ selected, setSelected}}>
       <IonApp>
         <IonReactRouter>
           <IonTabs>
             <IonRouterOutlet>
-              <Route path="/tab1">
+              <Route path="/beer-beer">
                 <Tab1 />
               </Route>
               <Route path="/brewery/:id" component={Tab4}></Route>
-              <Route exact path="/tab2">
+              <Route exact path="/discover">
                 <Tab2 />
               </Route>
-              <Route path="/tab3">
+              <Route path="/favorites">
                 <Tab3 />
               </Route>
               <Route exact path="/">
-                <Redirect to="/tab1" />
+                <Redirect to="/beer-beer" />
               </Route>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
-              <IonTabButton tab="tab1" href="/tab1">
-                <IonIcon aria-hidden="true" icon={triangle} />
+              <IonTabButton tab="tab1" href="/beer-beer">
+                <IonIcon aria-hidden="true" icon={beerOutline} />
                 <IonLabel>Beer Beer</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="tab2" href="/tab2">
-                <IonIcon aria-hidden="true" icon={ellipse} />
+              <IonTabButton tab="tab2" href="/discover">
+                <IonIcon aria-hidden="true" icon={searchOutline} />
                 <IonLabel>Discover</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="tab3" href="/tab3">
-                <IonIcon aria-hidden="true" icon={square} />
+              <IonTabButton tab="tab3" href="/favorites">
+                <IonIcon aria-hidden="true" icon={starOutline} />
                 <IonLabel>Favorites</IonLabel>
               </IonTabButton>
             </IonTabBar>
