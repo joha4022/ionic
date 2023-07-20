@@ -1,7 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonSearchbar, IonGrid, IonRow, IonCol, IonNavLink } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonSearchbar, IonGrid, IonRow, IonCol, IonSpinner } from '@ionic/react';
 import './Tab1.css';
-import React, { useEffect, useState, useContext } from 'react';
-import { Geolocation } from '@capacitor/geolocation';
+import React, { useEffect, useContext } from 'react';
+// import { Geolocation } from '@capacitor/geolocation';
 import { useHistory } from 'react-router';
 import { AppContext } from '../App';
 
@@ -10,38 +10,13 @@ import { AppContext } from '../App';
 
 
 const Tab1: React.FC = () => {
-  const [location, setLocation] = useState({ lat: 0, log: 0 });
-  const [tab1, setTab1] = useState<any[]>([]);
-  const { setSelected } = useContext(AppContext);
+  const { setSelected, tab1, fetchBars } = useContext(AppContext);
 
   const history = useHistory();
-
-  useEffect(() => {
-    Geolocation.getCurrentPosition()
-      .then(data => {
-        setLocation({
-          lat: data.coords.latitude,
-          log: data.coords.longitude
-        })
-        console.log(data)
-        return data.coords
-      })
-      .then(coords => {
-        const lat = coords.latitude;
-        const log = coords.longitude;
-        fetch(`https://api.openbrewerydb.org/v1/breweries?by_dist=${lat},${log}&per_page=6`)
-          .then(res => res.json())
-          .then(data => {
-            setTab1(data);
-            console.log(data)
-          })
-      })
-  }, [])
 
   const viewBrewery = (id: any) => {
     setSelected(tab1[id]);
     history.push(`/brewery/${tab1[id].name}`);
-    console.log(id);
   }
 
   if (tab1.length) {
@@ -52,13 +27,13 @@ const Tab1: React.FC = () => {
             <IonTitle size="large" className='title'>Beer Beer</IonTitle>
           </IonToolbar>
           <IonToolbar>
-            <IonSearchbar className='search-bar'></IonSearchbar>
+            <IonSearchbar className='search-bar' onKeyUp={(e)=>{fetchBars(e.currentTarget.value, e.key);if(e.key === 'Enter'){history.push('/discover');e.currentTarget.value = ''}}}></IonSearchbar>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
           <IonGrid>
             <IonRow>
-              <IonCol className='special-col'>Discover all local breweries</IonCol>
+              <IonCol className='special-col' onClick={()=>{history.push('/local/')}}>Discover all local breweries</IonCol>
             </IonRow>
             <IonRow>
               <IonCol data-type={tab1[0].brewery_type} id='0' onClick={(e) => { viewBrewery(e.currentTarget.id) }}>{tab1[0].name}</IonCol>
@@ -77,7 +52,24 @@ const Tab1: React.FC = () => {
       </IonPage>
     )
   } else {
-    return null;
+    return (
+      <IonPage className='loading-ion-page'>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large" className='title'>Beer Beer</IonTitle>
+          </IonToolbar>
+          <IonToolbar>
+            <IonSearchbar className='search-bar' onKeyUp={(e)=>{fetchBars(e.currentTarget.value, e.key);if(e.key === 'Enter'){history.push('/discover');e.currentTarget.value = ''}}}></IonSearchbar>
+          </IonToolbar>
+        </IonHeader>
+        <div className='loading-screen'>
+          <div className='spinner-box'>
+            <IonSpinner></IonSpinner>
+          </div>
+          <div className='loading-text'>Brewing...</div>
+        </div>
+      </IonPage>
+    )
   }
 };
 

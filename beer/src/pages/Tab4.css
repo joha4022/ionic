@@ -1,10 +1,7 @@
 @import "~leaflet/dist/leaflet.css";
 
 #map {
-  height: 50%
-}
-
-.map-section {
+  height: 50%;
   margin: 5px;
   background: lightgray;
   height: 380px;
@@ -49,8 +46,14 @@
 .favbutton {
   width: 25px;
   height: 25px;
-  color: lightgray;
   margin-right: 10px;
+  color: lightgray;
   position: relative;
   top: 1px;
+}
+[data-on='on'] {
+  color:red;
+}
+[data-on='off'] {
+  color: lightgray;
 }
