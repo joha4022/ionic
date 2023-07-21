@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { IonBackButton, IonButtons, IonContent, IonPage, IonToolbar, IonIcon } from '@ionic/react';
+import { IonBackButton, IonButtons, IonContent, IonPage, IonToolbar, IonTitle, IonIcon, IonHeader } from '@ionic/react';
 import './Tab4.css';
 import * as L from 'leaflet';
 import { AppContext } from '../App';
@@ -42,24 +42,24 @@ const Tab4: React.FC = () => {
   }, [])
 
   const addFav = (target) => {
-    if(target.dataset.on === 'off') {
+    if (target.dataset.on === 'off') {
       //add to favorites
       const currentFav = [...favs];
       currentFav.push(selected);
       setFavs(currentFav);
       localStorage.setItem('favs', JSON.stringify(currentFav));
-      setTimeout(function() {
+      setTimeout(function () {
         target.dataset.on = 'on';
       }, 100)
-    } else if(target.dataset.on === 'on') {
+    } else if (target.dataset.on === 'on') {
       // remove from favorites
       const currentFav = [...favs];
-      for(const fav of currentFav) {
-      if(fav.id === selected.id) {
-        const index = currentFav.indexOf(fav);
-        currentFav.splice(index, 1);
-        setFavs(currentFav);
-        localStorage.setItem('favs', JSON.stringify(currentFav));
+      for (const fav of currentFav) {
+        if (fav.id === selected.id) {
+          const index = currentFav.indexOf(fav);
+          currentFav.splice(index, 1);
+          setFavs(currentFav);
+          localStorage.setItem('favs', JSON.stringify(currentFav));
         }
       }
       target.dataset.on = 'off';
@@ -68,18 +68,23 @@ const Tab4: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
-        <IonToolbar className='toolbar'>
+      <IonHeader collapse="condense">
+        <IonToolbar>
+          <IonTitle size="large" className='title'>Beer Beer</IonTitle>
+        </IonToolbar>
+        <IonToolbar className='toolbar-detail-page'>
           <IonButtons>
             <IonBackButton defaultHref='/'></IonBackButton>
           </IonButtons>
         </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
         <div className='map-section'></div>
         <div className='info-section'>
           <div className='type-save'>
             <div className='type' data-type={selected.brewery_type.toUpperCase()}>{selected.brewery_type.toUpperCase()}</div>
             <div className='save'>
-              <IonIcon slot="icon-only" icon={star} className='favbutton' data-on='off' onClick={(e)=>{addFav(e.currentTarget);}}></IonIcon>
+              <IonIcon slot="icon-only" icon={star} className='favbutton' data-on='off' onClick={(e) => { addFav(e.currentTarget); }}></IonIcon>
             </div>
           </div>
           <h1 className='name'>{selected.name}</h1>
